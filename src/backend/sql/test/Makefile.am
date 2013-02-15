@@ -67,6 +67,7 @@ test_sqlbe_HEADERS = \
 test_sqlbe_LDADD = \
 	$(top_builddir)/$(MODULEPATH)/libgnc-backend-sql.la \
 	$(top_builddir)/src/libqof/qof/libgnc-qof.la \
+	${top_builddir}/src/core-utils/libgnc-core-utils.la \
 	$(top_builddir)/src/test-core/libtest-core.la
 
 test_sqlbe_CFLAGS = \

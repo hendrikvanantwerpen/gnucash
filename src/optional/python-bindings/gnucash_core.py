@@ -40,7 +40,8 @@ from gnucash_core_c import gncInvoiceLookup, gncInvoiceGetInvoiceFromTxn, \
     gncInvoiceGetInvoiceFromLot, gncEntryLookup, gncInvoiceLookup, \
     gncCustomerLookup, gncVendorLookup, gncJobLookup, gncEmployeeLookup, \
     gncTaxTableLookup, gncTaxTableLookupByName, gnc_search_invoice_on_id, \
-    gnc_search_customer_on_id, gnc_search_bill_on_id , gnc_search_vendor_on_id, gncInvoiceNextID
+    gnc_search_customer_on_id, gnc_search_bill_on_id , gnc_search_vendor_on_id, gncInvoiceNextID, \
+    gncTaxTableGetTables
 
 class GnuCashCoreClass(ClassFromFunctions):
     _module = gnucash_core_c
@@ -203,6 +204,10 @@ class Book(GnuCashCoreClass):
         from gnucash_business import TaxTable
         return self.do_lookup_create_oo_instance(
             gncTaxTableLookupByName, TaxTable, name)
+
+    def TaxTableGetTables(self):
+        from gnucash_business import TaxTable
+        return [ TaxTable(instance=item) for item in gncTaxTableGetTables(self.instance) ]
 
     def BillLoookupByID(self, id):
         from gnucash_business import Bill
@@ -648,6 +653,10 @@ account_dict =  {
 methods_return_instance(Account, account_dict)
 methods_return_instance_lists(
     Account, { 'GetSplitList': Split,
+               'get_children': Account,
+               'get_children_sorted': Account,
+               'get_descendants': Account,
+               'get_descendants_sorted': Account
                        })
 Account.name = property( Account.GetName, Account.SetName )
 
